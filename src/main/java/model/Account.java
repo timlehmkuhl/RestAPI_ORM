@@ -13,8 +13,8 @@ public class Account {
     public String owner;
     public List<AccountEntry> entries;
 
-    public int balance() {
+    /*public int balance() {
         if (entries == null) return 0;
         return entries.stream().mapToInt(entry -> entry.value).sum();
-    }
+    }*/
 }
