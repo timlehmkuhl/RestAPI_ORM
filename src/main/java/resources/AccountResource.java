@@ -52,7 +52,11 @@ public class AccountResource {
         }
         accounts.put(account.id, account);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(account.id)).build(); // append new id to URI
+
         System.out.println("POSTET: " +  account.id + "" );
+        System.out.println(account.id);
+        account.getEntries().forEach(x -> System.out.println("value: " + x.value + ", date: " + x.date));
+
         return Response.created(uri).entity(account).build(); // return code is 201
     }
 
