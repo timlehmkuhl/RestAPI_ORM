@@ -5,9 +5,9 @@ import java.util.Date;
 
 public class JWTClaim {
 //Für User
-
+/*
     // registered JWT claim names, see https://tools.ietf.org/html/rfc7519#section-4.1
- /*   public String sub; // subject
+    public String sub; // subject
     public String name;
     public Date iat; // issued at
     public Date exp; // expiration time

@@ -8,7 +8,7 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
-import filter.AuthenticationFilter;
+//import filter.AuthenticationFilter;
 import model.JWTClaim;
 import model.User;
 import service.UserService;
@@ -20,10 +20,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
 
-@Path("/login")
+//@Path("/login")
 public class AuthenticationResource {
 
-    @POST
+ /*   @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response login(User userClaim) {
         Optional<User> user = UserService.queryByCredentials(userClaim.name, userClaim.passwordHash); // lookup user in database
@@ -48,5 +48,5 @@ public class AuthenticationResource {
             }
         }
         return Response.status(401).entity("Login failed").build();
-    }
+    }*/
 }

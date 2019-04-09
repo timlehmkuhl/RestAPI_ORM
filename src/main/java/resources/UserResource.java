@@ -1,6 +1,6 @@
 package resources;
 
-import filter.AuthenticationFilter.Secured;
+//import filter.AuthenticationFilter.Secured;
 import model.User;
 import service.UserService;
 
@@ -48,8 +48,8 @@ public class UserResource {
         throw new NotFoundException("User not found.");
     }
 
-    @GET @Secured
+  /*  @GET @Secured
     public Collection<User> getUsers() {
         return UserService.queryAllUsers();
-    }
+    }*/
 }
