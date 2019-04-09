@@ -72,25 +72,42 @@ public class KundeResource {
             return Response.ok(kunde).build(); // return code is 200
         }
     }
-/*
+
     @PATCH
     @Path("{id}")
-    public Response patchAccount(@PathParam("id") int id, @NotNull Account patchedAccount) {
-        Account account = accounts.get(id);
-        boolean exists = account != null;
+    public Response patchKunde(@PathParam("id") int id, @NotNull Kunde patchedKunde) {
+        Kunde kunde = kunden.get(id);
+        boolean exists = kunde != null;
         if (!exists) {
             return Response.status(404).build(); // return code is 404
         } else {
-            if (patchedAccount.owner != null) {
-                account.owner = patchedAccount.owner;
+            if (patchedKunde.vorname != null) {
+                kunde.vorname = patchedKunde.vorname;
             }
-            if (patchedAccount.entries != null) {
-                account.entries = patchedAccount.entries;
+            if (patchedKunde.nachname != null) {
+                System.out.println("TEST");
+                kunde.nachname = patchedKunde.nachname;
             }
-            return Response.ok(account).build(); // return code is 200
+            if (patchedKunde.anschrift.strasse != null) {
+                kunde.anschrift.strasse = patchedKunde.anschrift.strasse;
+            }
+            if (patchedKunde.anschrift.plz != 0) {
+                kunde.anschrift.plz = patchedKunde.anschrift.plz;
+            }
+            if (patchedKunde.anschrift.ort != null) {
+                kunde.anschrift.ort = patchedKunde.anschrift.ort;
+            }
+            if (patchedKunde.geschaeftskunde != null) {
+                kunde.geschaeftskunde = patchedKunde.geschaeftskunde;
+            }
+            if (patchedKunde.kundenkarte != null) {
+                kunde.kundenkarte = patchedKunde.kundenkarte;
+            }
+
+            return Response.ok(kunde).build(); // return code is 200
         }
     }
-
+/*
     @DELETE
     public Response deleteAccounts() {
         accounts.clear();
