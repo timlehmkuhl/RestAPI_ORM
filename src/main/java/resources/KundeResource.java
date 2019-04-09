@@ -1,7 +1,11 @@
 package resources;
 
 import model.Kunde;
+import service.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -63,6 +67,12 @@ public class KundeResource {
        /* System.out.println("POSTET: " +  kunde.kundenId + "" );
         System.out.println(kunde.kundenId);
         kunde.getEntries().forEach(x -> System.out.println("value: " + x.value + ", date: " + x.date));*/
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+       em.persist(kunde);
+        em.getTransaction().commit();
 
         return Response.created(uri).entity(kunde).build(); // return code is 201
     }

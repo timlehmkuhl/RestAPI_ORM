@@ -1,9 +1,18 @@
 package model;
 
+import javax.persistence.*;
+
+
+@Embeddable
 public class Anschrift {
 
+
+
     public String strasse;
+
+
     public int plz;
+
     public String ort;
 
     /*public Anschrift(String strasse, int plz, String ort) {

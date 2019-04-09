@@ -1,92 +1,39 @@
 package model;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Entity
 @XmlRootElement
 public class Kunde {
 
     public static AtomicInteger nextId = new AtomicInteger(1);
 
-
+    @Id
     public int kundenID;
 
+    @Basic
     public String vorname;
+
 
     public String nachname;
 
+    @Embedded
     public Anschrift anschrift;
+
 
     public Boolean geschaeftskunde;
 
+
+
     public Boolean kundenkarte;
+
 
     public String email;
 
-    public static AtomicInteger getNextId() {
-        return nextId;
-    }
 
-    public static void setNextId(AtomicInteger nextId) {
-        Kunde.nextId = nextId;
-    }
-
-    public int getKundenID() {
-        return kundenID;
-    }
-
-    public void setKundenID(int kundenID) {
-        this.kundenID = kundenID;
-    }
-
-    public String getVorname() {
-        return vorname;
-    }
-
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
-    }
-
-    public String getNachname() {
-        return nachname;
-    }
-
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
-    }
-
-    public Anschrift getAnschrift() {
-        return anschrift;
-    }
-
-    public void setAnschrift(Anschrift anschrift) {
-        this.anschrift = anschrift;
-    }
-
-    public Boolean getGeschaeftskunde() {
-        return geschaeftskunde;
-    }
-
-    public void setGeschaeftskunde(Boolean geschaeftskunde) {
-        this.geschaeftskunde = geschaeftskunde;
-    }
-
-    public Boolean getKundenkarte() {
-        return kundenkarte;
-    }
-
-    public void setKundenkarte(Boolean kundenkarte) {
-        this.kundenkarte = kundenkarte;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
 
  /*

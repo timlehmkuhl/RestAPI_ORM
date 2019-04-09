@@ -1,11 +1,13 @@
 package model;
 
 //import javax.ws.rs.GET;
+import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @XmlRootElement // required for XML binding
+//@Entity
 public class Account {
 
     public static AtomicInteger nextId = new AtomicInteger(1);
