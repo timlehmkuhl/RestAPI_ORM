@@ -29,6 +29,11 @@ public class KundeResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Kunde> getAccounts() {
+        for (int i = 1; i <= kunden.size(); i++){
+            System.out.println(kunden.get(i).nachname + " " + kunden.get(i).kundenID);
+        }
+      //  System.out.println(kunden.get(1).nachname);
+
         return kunden.values();  // return code is 200
     }
 
@@ -36,10 +41,12 @@ public class KundeResource {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getKunde(@PathParam("id") int id) {
+
         Kunde kunde = kunden.get(id);
         if (kunde == null) {
             return Response.status(Response.Status.NOT_FOUND).build(); // return code is 404
         }
+
         return Response.ok(kunde).build(); // return code is 200
     }
 
