@@ -83,20 +83,20 @@ public class KundeResource {
         } else {
             if (patchedKunde.vorname != null) {
                 kunde.vorname = patchedKunde.vorname;
-            }
+            } else
             if (patchedKunde.nachname != null) {
                 System.out.println("TEST");
                 kunde.nachname = patchedKunde.nachname;
-            }
+            } else
             if (patchedKunde.anschrift.strasse != null) {
                 kunde.anschrift.strasse = patchedKunde.anschrift.strasse;
-            }
+            } else
             if (patchedKunde.anschrift.plz != 0) {
                 kunde.anschrift.plz = patchedKunde.anschrift.plz;
-            }
+            } else
             if (patchedKunde.anschrift.ort != null) {
                 kunde.anschrift.ort = patchedKunde.anschrift.ort;
-            }
+            } else
             if (patchedKunde.geschaeftskunde != null) {
                 kunde.geschaeftskunde = patchedKunde.geschaeftskunde;
             }
