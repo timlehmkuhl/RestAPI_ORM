@@ -1,7 +1,6 @@
 package resources;
 
 import model.Kunde;
-import service.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -28,17 +27,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Path("/kunden")
 public class KundeResource {
 
-    final static Map<Integer, Kunde> kunden = new ConcurrentHashMap<>();
+    final static Map<Integer, Kunde> kundenMap = new ConcurrentHashMap<>();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Kunde> getAccounts() {
-        for (int i = 1; i <= kunden.size(); i++){
-            System.out.println(kunden.get(i).nachname + " " + kunden.get(i).kundenID);
-        }
-      //  System.out.println(kunden.get(1).nachname);
+//        for (int i = 1; i <= kundenMap.size(); i++){
+//            System.out.println(kundenMap.get(i).nachname + " " + kundenMap.get(i).kundenID);
+  //      }
+      //  System.out.println(kundenMap.get(1).nachname);
 
-        return kunden.values();  // return code is 200
+        return kundenMap.values();  // return code is 200
     }
 
     @GET
@@ -46,7 +45,7 @@ public class KundeResource {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getKunde(@PathParam("id") int id) {
 
-        Kunde kunde = kunden.get(id);
+        Kunde kunde = kundenMap.get(id);
         if (kunde == null) {
             return Response.status(Response.Status.NOT_FOUND).build(); // return code is 404
         }
@@ -57,11 +56,11 @@ public class KundeResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKunde(@NotNull Kunde kunde, @Context UriInfo uriInfo) {
-        boolean validId = kunde.kundenID > 0 && kunden.get(kunde.kundenID) == null;
+        boolean validId = kunde.kundenID > 0 && kundenMap.get(kunde.kundenID) == null;
         if (!validId) {
             kunde.kundenID = Kunde.nextId.getAndIncrement();
         }
-        kunden.put(kunde.kundenID, kunde);
+        kundenMap.put(kunde.kundenID, kunde);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kunde.kundenID)).build(); // append new id to URI
 
        /* System.out.println("POSTET: " +  kunde.kundenId + "" );
@@ -80,12 +79,12 @@ public class KundeResource {
     @PUT
     @Path("{id}")
     public Response putKunde(@PathParam("id") int id, @NotNull Kunde kunde, @Context UriInfo uriInfo) {
-        boolean exists = kunden.get(id) != null;
+        boolean exists = kundenMap.get(id) != null;
         kunde.kundenID = id;
         if (!exists) {
             return postKunde(kunde, uriInfo);
         } else {
-            kunden.put(id, kunde);
+            kundenMap.put(id, kunde);
             return Response.ok(kunde).build(); // return code is 200
         }
     }
@@ -93,7 +92,7 @@ public class KundeResource {
     @PATCH
     @Path("{id}")
     public Response patchKunde(@PathParam("id") int id, @NotNull Kunde patchedKunde) {
-        Kunde kunde = kunden.get(id);
+        Kunde kunde = kundenMap.get(id);
         boolean exists = kunde != null;
         if (!exists) {
             return Response.status(404).build(); // return code is 404
@@ -124,19 +123,19 @@ public class KundeResource {
             return Response.ok(kunde).build(); // return code is 200
         }
     }
-/*
+
     @DELETE
-    public Response deleteAccounts() {
-        accounts.clear();
+    public Response deleteKunden() {
+
+        kundenMap.clear();
         System.out.println("DELETED ALL");
         return Response.noContent().build(); // return code is 204
     }
 
     @DELETE
     @Path("{id}")
-    public Response deleteAccount(@PathParam("id") int id) {
-        accounts.remove(id);
-        System.out.println("POSTET: " +  id + "" );
+    public Response deleteKunde(@PathParam("id") int id) {
+        kundenMap.remove(id);
         return Response.noContent().build(); // return code is 204
-    }*/
+    }
 }
