@@ -5,6 +5,7 @@ import model.Kunde;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -20,7 +21,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -56,22 +59,37 @@ public class KundeResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKunde(@NotNull Kunde kunde, @Context UriInfo uriInfo) {
-        boolean validId = kunde.kundenID > 0 && kundenMap.get(kunde.kundenID) == null;
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
+        EntityManager em = emf.createEntityManager();
+
+        //Gibt es Datensätze in der Datenbank?
+        String sql = "SELECT k.kundenID FROM Kunde k";
+        Query q = em.createQuery(sql);
+        List<Object[]> res = q.getResultList();
+        System.out.println(res.isEmpty());
+        //res.forEach(record -> System.out.println(Arrays.toString(record)));
+
+      //  boolean validId = kunde.kundenID > 0 && kundenMap.get(kunde.kundenID) == null;
+        boolean validId = kunde.kundenID > 0 && res.isEmpty();
         if (!validId) {
-            kunde.kundenID = Kunde.nextId.getAndIncrement();
+           // kunde.kundenID = Kunde.nextId.getAndIncrement();
+            kunde.kundenID = res.size()+1;
         }
-        kundenMap.put(kunde.kundenID, kunde);
+        //Kunde in Datenbank
+        em.getTransaction().begin();
+        em.persist(kunde);
+        em.getTransaction().commit();
+
+       // kundenMap.put(kunde.kundenID, kunde);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kunde.kundenID)).build(); // append new id to URI
 
        /* System.out.println("POSTET: " +  kunde.kundenId + "" );
         System.out.println(kunde.kundenId);
         kunde.getEntries().forEach(x -> System.out.println("value: " + x.value + ", date: " + x.date));*/
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-       em.persist(kunde);
-        em.getTransaction().commit();
+
+
 
         return Response.created(uri).entity(kunde).build(); // return code is 201
     }

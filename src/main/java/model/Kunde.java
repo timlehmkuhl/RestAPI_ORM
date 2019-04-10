@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @XmlRootElement
 public class Kunde {
 
+
     public static AtomicInteger nextId = new AtomicInteger(1);
 
     @Id
