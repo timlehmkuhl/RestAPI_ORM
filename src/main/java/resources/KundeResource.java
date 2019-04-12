@@ -62,12 +62,15 @@ public class KundeResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKunde(@NotNull Kunde kunde, @Context UriInfo uriInfo) {
-
+        int maxKundenID;
         //neue KundenID heruasfinden
-       Query q = em.createQuery("Select max(k.kundenID) From Kunde k");
-       Object maxKundenIDObject = q.getSingleResult();
-       int maxKundenID = maxKundenIDObject == null ? 0: (int) maxKundenIDObject;
-
+        try {
+            Query q = em.createQuery("Select max(k.kundenID) From Kunde k");
+            Object maxKundenIDObject = q.getSingleResult();
+            maxKundenID = maxKundenIDObject == null ? 0 : (int) maxKundenIDObject;
+        } catch (Exception e) {
+           maxKundenID = 0;
+        }
         boolean validId = kunde.kundenID > 0 && maxKundenID == 0;
         if (!validId) {
             kunde.kundenID = maxKundenID+1;
