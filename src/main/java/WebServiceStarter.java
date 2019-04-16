@@ -1,4 +1,6 @@
 import com.sun.net.httpserver.HttpServer;
+import model.Kauf;
+import model.Kunde;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -11,8 +13,9 @@ public class WebServiceStarter {
 
     public static void main(String[] args) throws Exception {
 
-     //   EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
-   //     EntityManager   em = emf.createEntityManager();
+      /*  EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
+        EntityManager   em = emf.createEntityManager();
+        Kauf kauf;*/
 
         ResourceConfig rc = new ResourceConfig().packages("resources", "filter");
         HttpServer server = JdkHttpServerFactory.createHttpServer(URI.create("http://localhost:8080/"), rc);

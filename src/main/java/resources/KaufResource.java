@@ -1,21 +1,13 @@
 package resources;
 
-import model.Kunde;
+import model.Kauf;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,23 +18,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Path("/kunden")
-public class KundeResource {
+@Path("/kaeufe")
+public class KaufResource {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
     EntityManager em = emf.createEntityManager();
-    final static Map<Integer, Kunde> kundenMap = new ConcurrentHashMap<>();
+   // final static Map<Integer, Kunde> kundenMap = new ConcurrentHashMap<>();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Collection<Kunde> getKunden() {
-    Query q = em.createQuery("select k from Kunde k");
-            List<Kunde> list = q.getResultList();
+    public Collection<Kauf> getKaeufe() {
+    Query q = em.createQuery("select k from Kauf k");
+            List<Kauf> list = q.getResultList();
             em.close();
 
 
         return list;  // return code is 200
     }
-
+/*
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -56,35 +48,35 @@ public class KundeResource {
         }
 
         return Response.ok(kunde).build(); // return code is 200
-    }
+    }*/
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response postKunde(@NotNull Kunde kunde, @Context UriInfo uriInfo) {
+    public Response postKauf(@NotNull Kauf kauf, @Context UriInfo uriInfo) {
         int maxKundenID;
         //neue KundenID heruasfinden
         try {
-            Query q = em.createQuery("Select max(k.kundenID) From Kunde k");
+            Query q = em.createQuery("Select max(k.kaufID) From Kauf k");
             Object maxKundenIDObject = q.getSingleResult();
             maxKundenID = maxKundenIDObject == null ? 0 : (int) maxKundenIDObject;
         } catch (Exception e) {
            maxKundenID = 0;
         }
-        boolean validId = kunde.kundenID > 0 && maxKundenID == 0;
+        boolean validId = kauf.kaufID > 0 && maxKundenID == 0;
         if (!validId) {
-            kunde.kundenID = maxKundenID+1;
+            kauf.kaufID = maxKundenID+1;
         }
         //Kunde in Datenbank
         em.getTransaction().begin();
-        em.persist(kunde);
+        em.persist(kauf);
         em.getTransaction().commit();
         em.close();
 
-        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kunde.kundenID)).build(); // append new id to URI
+        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kauf.kaufID)).build(); // append new id to URI
 
-        return Response.created(uri).entity(kunde).build(); // return code is 201
+        return Response.created(uri).entity(kauf).build(); // return code is 201
     }
-
+/*
     @PUT
     @Path("{id}")
     public Response putKunde(@PathParam("id") int id, @NotNull Kunde kunde, @Context UriInfo uriInfo) {
@@ -176,6 +168,5 @@ public class KundeResource {
         em.getTransaction().commit();
         em.close();
 
-        return Response.noContent().build(); // return code is 204
-    }
+        */
 }
