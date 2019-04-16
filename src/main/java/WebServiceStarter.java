@@ -18,9 +18,9 @@ public class WebServiceStarter {
 
     public static void main(String[] args) throws Exception {
 
-     EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
+  /*   EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
         EntityManager   em2 = emf.createEntityManager();
-        /*   Kauf kauf;*/
+
       Kauf kauf = new Kauf();
         kauf.setKaufID(1);
         kauf.setBaumarktID(1);
@@ -41,7 +41,7 @@ public class WebServiceStarter {
         em2.getTransaction().begin();
         em2.persist(kauf);
         em2.getTransaction().commit();
-
+*/
         ResourceConfig rc = new ResourceConfig().packages("resources", "filter");
         HttpServer server = JdkHttpServerFactory.createHttpServer(URI.create("http://localhost:8080/"), rc);
         System.out.println("Hit enter to stop HTTP server.");

@@ -66,12 +66,20 @@ public class KaufResource {
         if (!validId) {
             kauf.kaufID = maxKundenID+1;
         }
+      //  kauf.getPositions().forEach(x -> x.setKauf(kauf));
         //Kunde in Datenbank
+
+        kauf.getPositions().forEach(x -> x.setKauf(kauf));
+  //    System.err.println(kauf.getPositions().toArray()[1].toString());
+        //kauf.
+      /*  for(int i = 0; kauf.getPositions().size() < i; i++){
+            kauf.getPositions().get(i).setKauf(kauf);
+        }*/
         em.getTransaction().begin();
         em.persist(kauf);
         em.getTransaction().commit();
         em.close();
-
+        kauf.getPositions().forEach(x -> x.setKauf(null));
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kauf.kaufID)).build(); // append new id to URI
 
         return Response.created(uri).entity(kauf).build(); // return code is 201

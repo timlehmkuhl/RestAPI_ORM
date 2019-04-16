@@ -5,10 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @XmlRootElement // required for XML binding
@@ -24,10 +21,10 @@ public class Kauf {
     public String zeit;
 
    @OneToMany(mappedBy="kauf", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public Set<Position> positions;
+    public List<Position> positions;
 
     public Kauf() {
-        this.positions = new HashSet<>();
+        this.positions = new LinkedList<>();
 
     }
 
@@ -63,11 +60,11 @@ public class Kauf {
         this.zeit = zeit;
     }
 
-    public Set<Position> getPositions() {
+    public List<Position> getPositions() {
         return positions;
     }
 
-    public void setPositions(Set<Position> positions) {
+    public void setPositions(List<Position> positions) {
         this.positions = positions;
     }
 /*

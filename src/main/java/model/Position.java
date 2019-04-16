@@ -1,5 +1,9 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Currency;
@@ -19,6 +23,7 @@ public class Position {
 
     @ManyToOne
     @JoinColumn(name="fk")
+   @JsonIgnoreProperties
     public Kauf kauf;
 
     public Position() {
