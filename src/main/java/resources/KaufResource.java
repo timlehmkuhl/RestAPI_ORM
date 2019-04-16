@@ -31,7 +31,7 @@ public class KaufResource {
             List<Kauf> list = q.getResultList();
             em.close();
 
-
+        list.stream().forEach(x -> x.getPositions().forEach( c -> c.setKauf(null)));
         return list;  // return code is 200
     }
 /*
