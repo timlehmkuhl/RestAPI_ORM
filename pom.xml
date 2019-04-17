@@ -1,8 +1,8 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.oncampus.patterns</groupId>   
-    <artifactId>rest-server</artifactId>
+    <groupId>de.oncampus.patterns</groupId>
+    <artifactId>dm_a2_restapi</artifactId>
     <version>1</version>
 
     <properties>
@@ -80,22 +80,22 @@
             <version>5.3.2</version>
             <scope>test</scope>
         </dependency>
-    <dependency>
-        <groupId>org.eclipse.persistence</groupId>
-        <artifactId>org.eclipse.persistence.jpa</artifactId>
-        <version>2.7.4</version>
-    </dependency>
-    <dependency>
-        <groupId>org.mariadb.jdbc</groupId>
-        <artifactId>mariadb-java-client</artifactId>
-        <version>2.3.0</version>
-    </dependency>
-    <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>1.18.6</version>
-        <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.6</version>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
 

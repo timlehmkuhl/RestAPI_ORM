@@ -31,29 +31,30 @@ public class KaufResource {
             List<Kauf> list = q.getResultList();
             em.close();
 
-        list.stream().forEach(x -> x.getPositions().forEach( c -> c.setKauf(null)));
+     //   list.stream().forEach(x -> x.getPositions().forEach( c -> c.setKauf(null)));
         return list;  // return code is 200
     }
-/*
+
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getKunde(@PathParam("id") int id) {
+    public Response getKauf(@PathParam("id") int id) {
 
         //Gesuchten Kunden aus DB holen
-        Kunde kunde =  em.find(Kunde.class, id);
+        Kauf kauf =  em.find(Kauf.class, id);
 
-        if (kunde == null) {
+        if (kauf == null) {
             return Response.status(Response.Status.NOT_FOUND).build(); // return code is 404
         }
 
-        return Response.ok(kunde).build(); // return code is 200
-    }*/
+        return Response.ok(kauf).build(); // return code is 200
+    }
 
-    @POST
+   @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKauf(@NotNull Kauf kauf, @Context UriInfo uriInfo) {
         int maxKundenID;
+       int maxPositionID;
         //neue KundenID heruasfinden
         try {
             Query q = em.createQuery("Select max(k.kaufID) From Kauf k");
@@ -62,54 +63,68 @@ public class KaufResource {
         } catch (Exception e) {
            maxKundenID = 0;
         }
-        boolean validId = kauf.kaufID > 0 && maxKundenID == 0;
-        if (!validId) {
-            kauf.kaufID = maxKundenID+1;
-        }
-      //  kauf.getPositions().forEach(x -> x.setKauf(kauf));
-        //Kunde in Datenbank
+
+       boolean validId = kauf.kaufID > 0 && maxKundenID == 0;
+       if (!validId) {
+           kauf.kaufID = maxKundenID+1;
+       }
+
+        //Positions ID setzen
+       try {
+           Query q = em.createQuery("Select max(p.id) From Position p");
+           Object maxPositionIDObject = q.getSingleResult();
+           maxPositionID = maxPositionIDObject == null ? 0 : (int) maxPositionIDObject;
+       } catch (Exception e) {
+           maxPositionID = 0;
+       }
+
+       for (int i = 0; i < kauf.getPositions().size(); i++){
+           kauf.getPositions().get(i).setId(maxPositionID + i + 1);
+       }
+
 
         kauf.getPositions().forEach(x -> x.setKauf(kauf));
-  //    System.err.println(kauf.getPositions().toArray()[1].toString());
-        //kauf.
-      /*  for(int i = 0; kauf.getPositions().size() < i; i++){
-            kauf.getPositions().get(i).setKauf(kauf);
-        }*/
+
         em.getTransaction().begin();
         em.persist(kauf);
         em.getTransaction().commit();
         em.close();
-        kauf.getPositions().forEach(x -> x.setKauf(null));
+
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kauf.kaufID)).build(); // append new id to URI
 
         return Response.created(uri).entity(kauf).build(); // return code is 201
     }
-/*
+
     @PUT
     @Path("{id}")
-    public Response putKunde(@PathParam("id") int id, @NotNull Kunde kunde, @Context UriInfo uriInfo) {
+    public Response putKunde(@PathParam("id") int id, @NotNull Kauf kauf, @Context UriInfo uriInfo) {
 
-        Kunde findKunde =  em.find(Kunde.class, id);   //q.getSingleResult();
+        Kauf findKauf =  em.find(Kauf.class, id);   //q.getSingleResult();
 
-        boolean exists = findKunde != null;
-        kunde.kundenID = id;
+        boolean exists = findKauf != null;
+        kauf.kaufID = id;
         if (!exists) {
-            return postKunde(kunde, uriInfo);
+            return postKauf(kauf, uriInfo);
         } else {
             //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
             em.getTransaction().begin();
-            Query qD = em.createQuery("delete from Kunde k where k.kundenID = :sqlWhere");
-            qD.setParameter("sqlWhere", id);
-            qD.executeUpdate();
+            //Query qD = em.createQuery("delete from Kauf k where k.kaufID = :sqlWhere");
+         //   qD.setParameter("sqlWhere", id);
+          //  qD.executeUpdate();
          //   em.remove(id);
+            em.remove(findKauf);
+            em.getTransaction().commit();
 
-            em.persist(kunde);
+            kauf.getPositions().forEach(x -> x.setKauf(kauf));
+
+            em.getTransaction().begin();
+            em.persist(kauf);
             em.getTransaction().commit();
             em.close();
-            return Response.ok(kunde).build(); // return code is 200
+            return Response.ok(kauf).build(); // return code is 200
         }
     }
-
+/*
     @PATCH
     @Path("{id}")
     public Response patchKunde(@PathParam("id") int id, @NotNull Kunde patchedKunde) {

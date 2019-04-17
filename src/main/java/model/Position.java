@@ -24,6 +24,7 @@ public class Position {
 
     @ManyToOne
     @JoinColumn(name="fk")
+    @XmlTransient
    @JsonIgnore
     public Kauf kauf;
 
@@ -62,10 +63,14 @@ public class Position {
         this.preis = preis;
     }
 
+    @XmlTransient
+    @JsonIgnore
     public Kauf getKauf() {
         return kauf;
     }
 
+    @XmlTransient
+    @JsonIgnore
     public void setKauf(Kauf kauf) {
         this.kauf = kauf;
     }
