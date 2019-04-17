@@ -22,16 +22,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class KaufResource {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
     EntityManager em = emf.createEntityManager();
-   // final static Map<Integer, Kunde> kundenMap = new ConcurrentHashMap<>();
+    // final static Map<Integer, Kunde> kundenMap = new ConcurrentHashMap<>();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Kauf> getKaeufe() {
-    Query q = em.createQuery("select k from Kauf k");
-            List<Kauf> list = q.getResultList();
-            em.close();
+        Query q = em.createQuery("select k from Kauf k");
+        List<Kauf> list = q.getResultList();
+        em.close();
 
-     //   list.stream().forEach(x -> x.getPositions().forEach( c -> c.setKauf(null)));
+        //   list.stream().forEach(x -> x.getPositions().forEach( c -> c.setKauf(null)));
         return list;  // return code is 200
     }
 
@@ -41,7 +41,7 @@ public class KaufResource {
     public Response getKauf(@PathParam("id") int id) {
 
         //Gesuchten Kunden aus DB holen
-        Kauf kauf =  em.find(Kauf.class, id);
+        Kauf kauf = em.find(Kauf.class, id);
 
         if (kauf == null) {
             return Response.status(Response.Status.NOT_FOUND).build(); // return code is 404
@@ -50,38 +50,37 @@ public class KaufResource {
         return Response.ok(kauf).build(); // return code is 200
     }
 
-   @POST
+    @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKauf(@NotNull Kauf kauf, @Context UriInfo uriInfo) {
         int maxKundenID;
-       int maxPositionID;
+        int maxPositionID;
         //neue KundenID heruasfinden
         try {
             Query q = em.createQuery("Select max(k.kaufID) From Kauf k");
             Object maxKundenIDObject = q.getSingleResult();
             maxKundenID = maxKundenIDObject == null ? 0 : (int) maxKundenIDObject;
         } catch (Exception e) {
-           maxKundenID = 0;
+            maxKundenID = 0;
         }
 
-       boolean validId = kauf.kaufID > 0 && maxKundenID == 0;
-       if (!validId) {
-           kauf.kaufID = maxKundenID+1;
-       }
+        boolean validId = kauf.kaufID > 0 && maxKundenID == 0;
+        if (!validId) {
+            kauf.kaufID = maxKundenID + 1;
+        }
 
         //Positions ID setzen
-       try {
-           Query q = em.createQuery("Select max(p.id) From Position p");
-           Object maxPositionIDObject = q.getSingleResult();
-           maxPositionID = maxPositionIDObject == null ? 0 : (int) maxPositionIDObject;
-       } catch (Exception e) {
-           maxPositionID = 0;
-       }
+        try {
+            Query q = em.createQuery("Select max(p.id) From Position p");
+            Object maxPositionIDObject = q.getSingleResult();
+            maxPositionID = maxPositionIDObject == null ? 0 : (int) maxPositionIDObject;
+        } catch (Exception e) {
+            maxPositionID = 0;
+        }
 
-       for (int i = 0; i < kauf.getPositions().size(); i++){
-           kauf.getPositions().get(i).setId(maxPositionID + i + 1);
-       }
-
+        for (int i = 0; i < kauf.getPositions().size(); i++) {
+            kauf.getPositions().get(i).setId(maxPositionID + i + 1);
+        }
 
         kauf.getPositions().forEach(x -> x.setKauf(kauf));
 
@@ -99,7 +98,7 @@ public class KaufResource {
     @Path("{id}")
     public Response putKunde(@PathParam("id") int id, @NotNull Kauf kauf, @Context UriInfo uriInfo) {
 
-        Kauf findKauf =  em.find(Kauf.class, id);   //q.getSingleResult();
+        Kauf findKauf = em.find(Kauf.class, id);   //q.getSingleResult();
 
         boolean exists = findKauf != null;
         kauf.kaufID = id;
@@ -109,9 +108,9 @@ public class KaufResource {
             //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
             em.getTransaction().begin();
             //Query qD = em.createQuery("delete from Kauf k where k.kaufID = :sqlWhere");
-         //   qD.setParameter("sqlWhere", id);
-          //  qD.executeUpdate();
-         //   em.remove(id);
+            //   qD.setParameter("sqlWhere", id);
+            //  qD.executeUpdate();
+            //   em.remove(id);
             em.remove(findKauf);
             em.getTransaction().commit();
 
@@ -124,58 +123,61 @@ public class KaufResource {
             return Response.ok(kauf).build(); // return code is 200
         }
     }
-/*
-    @PATCH
-    @Path("{id}")
-    public Response patchKunde(@PathParam("id") int id, @NotNull Kunde patchedKunde) {
 
-        Kunde kunde =  em.find(Kunde.class, id);
+    /*
+        @PATCH
+        @Path("{id}")
+        public Response patchKunde(@PathParam("id") int id, @NotNull Kunde patchedKunde) {
 
-        boolean exists = kunde != null;
-        if (!exists) {
-            return Response.status(404).build(); // return code is 404
-        } else {
-            if (patchedKunde.vorname != null) {
-                kunde.vorname = patchedKunde.vorname;
-            }
-            if (patchedKunde.nachname != null) {
+            Kunde kunde =  em.find(Kunde.class, id);
 
-                kunde.nachname = patchedKunde.nachname;
-            }
-            if (patchedKunde.anschrift.strasse != null) {
-                System.out.println("TEST");
-                kunde.anschrift.strasse = patchedKunde.anschrift.strasse;
-            }
-            if (patchedKunde.anschrift.plz != 0) {
-                kunde.anschrift.plz = patchedKunde.anschrift.plz;
-            }
-            if (patchedKunde.anschrift.ort != null) {
-                kunde.anschrift.ort = patchedKunde.anschrift.ort;
-            }
-            if (patchedKunde.geschaeftskunde != null) {
-                kunde.geschaeftskunde = patchedKunde.geschaeftskunde;
-            }
-            if (patchedKunde.kundenkarte != null) {
-                kunde.kundenkarte = patchedKunde.kundenkarte;
+            boolean exists = kunde != null;
+            if (!exists) {
+                return Response.status(404).build(); // return code is 404
+            } else {
+                if (patchedKunde.vorname != null) {
+                    kunde.vorname = patchedKunde.vorname;
+                }
+                if (patchedKunde.nachname != null) {
+
+                    kunde.nachname = patchedKunde.nachname;
+                }
+                if (patchedKunde.anschrift.strasse != null) {
+                    System.out.println("TEST");
+                    kunde.anschrift.strasse = patchedKunde.anschrift.strasse;
+                }
+                if (patchedKunde.anschrift.plz != 0) {
+                    kunde.anschrift.plz = patchedKunde.anschrift.plz;
+                }
+                if (patchedKunde.anschrift.ort != null) {
+                    kunde.anschrift.ort = patchedKunde.anschrift.ort;
+                }
+                if (patchedKunde.geschaeftskunde != null) {
+                    kunde.geschaeftskunde = patchedKunde.geschaeftskunde;
+                }
+                if (patchedKunde.kundenkarte != null) {
+                    kunde.kundenkarte = patchedKunde.kundenkarte;
+                }
+
+                em.getTransaction().begin();
+                em.persist(kunde);
+                em.getTransaction().commit();
+                em.close();
+
+
+                return Response.ok(kunde).build(); // return code is 200
             }
 
-            em.getTransaction().begin();
-            em.persist(kunde);
-            em.getTransaction().commit();
-            em.close();
-
-
-            return Response.ok(kunde).build(); // return code is 200
-        }
-
-    }
+        }*/
 
     @DELETE
-    public Response deleteKunden() {
+    public Response deleteKaeufe() {
 
         em.getTransaction().begin();
-        Query q =  em.createQuery("Delete FROM Kunde");
+        Query q = em.createQuery("Delete FROM Position ");
+        Query q2 = em.createQuery("Delete FROM Kauf");
         q.executeUpdate();
+        q2.executeUpdate();
         em.getTransaction().commit();
         em.close();
         System.out.println("DELETED ALL");
@@ -187,9 +189,10 @@ public class KaufResource {
     public Response deleteKunde(@PathParam("id") int id) {
 
         em.getTransaction().begin();
-        em.remove(em.find(Kunde.class, id));
+        em.remove(em.find(Kauf.class, id));
         em.getTransaction().commit();
         em.close();
 
-        */
+        return Response.noContent().build(); // return code is 204
+    }
 }
