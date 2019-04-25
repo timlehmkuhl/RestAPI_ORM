@@ -1,6 +1,7 @@
 package resources;
 
 import model.Kauf;
+import model.Position;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -53,6 +54,10 @@ public class KaufResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKauf(@NotNull Kauf kauf, @Context UriInfo uriInfo) {
+     /*   Position p = kauf.getPositions().get(1);
+        p.setPreis(3.99);
+        System.err.println(kauf.getPositions().get(1).preis);
+        kauf.getPositions().set(1, 3.99);*/
         int maxKundenID;
         int maxPositionID;
         //neue KundenID heruasfinden

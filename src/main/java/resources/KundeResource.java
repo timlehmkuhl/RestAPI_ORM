@@ -131,7 +131,7 @@ public class KundeResource {
                 System.out.println("TEST");
                 kunde.anschrift.strasse = patchedKunde.anschrift.strasse;
             }
-            if (patchedKunde.anschrift.plz != 0) {
+            if (patchedKunde.anschrift.plz != null) {
                 kunde.anschrift.plz = patchedKunde.anschrift.plz;
             }
             if (patchedKunde.anschrift.ort != null) {

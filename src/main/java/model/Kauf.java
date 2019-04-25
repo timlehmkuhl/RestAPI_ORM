@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,17 +20,27 @@ public class Kauf {
 
     public int baumarktID;
 
-    public String zeit;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    public Date zeit;
+
 
    @OneToMany(mappedBy="kauf", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Position> positions;
 
     public Kauf() {
+        this.zeit = new Date();
         this.positions = new LinkedList<>();
 
     }
 
-    public int getKaufID() {
+    public List<Position> getPositions() {
+        return positions;
+    }
+
+
+
+
+  /*  public int getKaufID() {
         return kaufID;
     }
 
@@ -59,14 +71,13 @@ public class Kauf {
     public void setZeit(String zeit) {
         this.zeit = zeit;
     }
-
-    public List<Position> getPositions() {
-        return positions;
-    }
-
-    public void setPositions(List<Position> positions) {
+      public void setPositions(List<Position> positions) {
         this.positions = positions;
-    }
+    }*/
+
+
+
+
 /*
     <Kauf Kauf-ID="KAUF1">
 			<Kunden-ID>K1</Kunden-ID>

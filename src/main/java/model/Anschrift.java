@@ -11,7 +11,7 @@ public class Anschrift {
     public String strasse;
 
 
-    public int plz;
+    public String plz;
 
     public String ort;
 
@@ -20,4 +20,7 @@ public class Anschrift {
         this.plz = plz;
         this.ort = ort;
     }*/
+
+
+
 }

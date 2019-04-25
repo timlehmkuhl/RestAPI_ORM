@@ -1,13 +1,18 @@
 package model;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-//import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 import javax.persistence.*;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.Currency;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 @Entity
 @Table(name="positions")
 public class Position {
@@ -19,7 +24,9 @@ public class Position {
 
     public int anzahl;
 
-    public int preis;
+//@JsonFormat(shape = JsonFormat.Shape.NUMBER_FLOAT, pattern = )
+@Column(name = "preis",precision=10, scale=0)
+    public double preis;
 
 
     @ManyToOne
@@ -29,6 +36,7 @@ public class Position {
     public Kauf kauf;
 
     public Position() {
+
     }
 
     public int getId() {
@@ -39,7 +47,25 @@ public class Position {
         this.id = id;
     }
 
-    public int getArtikelID() {
+    @XmlTransient
+    @JsonIgnore
+    public void setKauf(Kauf kauf) {
+        this.kauf = kauf;
+    }
+
+    public void setPreis(double preis) {
+        String str = String.valueOf(preis);
+
+        if (str.substring(str.indexOf(".")+1).length() > 2) {
+            BigDecimal bd = new BigDecimal(preis).setScale(2, RoundingMode.FLOOR);
+            this.preis = bd.doubleValue();
+        } else {
+            this.preis = preis;
+        }
+
+    }
+
+  /*  public int getArtikelID() {
         return artikelID;
     }
 
@@ -59,21 +85,15 @@ public class Position {
         return preis;
     }
 
-    public void setPreis(int preis) {
-        this.preis = preis;
-    }
+
 
     @XmlTransient
     @JsonIgnore
     public Kauf getKauf() {
         return kauf;
-    }
+    }*/
 
-    @XmlTransient
-    @JsonIgnore
-    public void setKauf(Kauf kauf) {
-        this.kauf = kauf;
-    }
+
 
     /*
     <Kauf Kauf-ID="KAUF1">
