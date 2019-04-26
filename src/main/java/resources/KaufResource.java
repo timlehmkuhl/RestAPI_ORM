@@ -1,7 +1,7 @@
 package resources;
 
 import model.Kauf;
-import model.Position;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,14 +16,12 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 @Path("/kaeufe")
 public class KaufResource {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
     EntityManager em = emf.createEntityManager();
-    // final static Map<Integer, Kunde> kundenMap = new ConcurrentHashMap<>();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -32,7 +30,6 @@ public class KaufResource {
         List<Kauf> list = q.getResultList();
         em.close();
 
-        //   list.stream().forEach(x -> x.getPositions().forEach( c -> c.setKauf(null)));
         return list;  // return code is 200
     }
 
@@ -43,7 +40,7 @@ public class KaufResource {
 
         //Gesuchten Kunden aus DB holen
         Kauf kauf = em.find(Kauf.class, id);
-
+        em.close();
         if (kauf == null) {
             return Response.status(Response.Status.NOT_FOUND).build(); // return code is 404
         }
@@ -54,38 +51,6 @@ public class KaufResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKauf(@NotNull Kauf kauf, @Context UriInfo uriInfo) {
-     /*   Position p = kauf.getPositions().get(1);
-        p.setPreis(3.99);
-        System.err.println(kauf.getPositions().get(1).preis);
-        kauf.getPositions().set(1, 3.99);*/
-      /*  int maxKundenID;
-        int maxPositionID;
-        //neue KundenID heruasfinden
-        try {
-            Query q = em.createQuery("Select max(k.kaufID) From Kauf k");
-            Object maxKundenIDObject = q.getSingleResult();
-            maxKundenID = maxKundenIDObject == null ? 0 : (int) maxKundenIDObject;
-        } catch (Exception e) {
-            maxKundenID = 0;
-        }
-
-        boolean validId = kauf.kaufID > 0 && maxKundenID == 0;
-        if (!validId) {
-            kauf.kaufID = maxKundenID + 1;
-        }
-
-        //Positions ID setzen
-        try {
-            Query q = em.createQuery("Select max(p.id) From Position p");
-            Object maxPositionIDObject = q.getSingleResult();
-            maxPositionID = maxPositionIDObject == null ? 0 : (int) maxPositionIDObject;
-        } catch (Exception e) {
-            maxPositionID = 0;
-        }
-
-        for (int i = 0; i < kauf.getPositions().size(); i++) {
-            kauf.getPositions().get(i).setId(maxPositionID + i + 1);
-        }*/
 
         kauf.getPositions().forEach(x -> x.setKauf(kauf));
 
@@ -103,7 +68,7 @@ public class KaufResource {
     @Path("{id}")
     public Response putKauf(@PathParam("id") int id, @NotNull Kauf kauf, @Context UriInfo uriInfo) {
 
-        Kauf findKauf = em.find(Kauf.class, id);   //q.getSingleResult();
+        Kauf findKauf = em.find(Kauf.class, id);
 
         boolean exists = findKauf != null;
         kauf.kaufID = id;
@@ -111,22 +76,9 @@ public class KaufResource {
             return postKauf(kauf, uriInfo);
         } else {
             //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
-      /*      em.getTransaction().begin();
-            //Query qD = em.createQuery("delete from Kauf k where k.kaufID = :sqlWhere");
-            //   qD.setParameter("sqlWhere", id);
-            //  qD.executeUpdate();
-            //   em.remove(id);
-            em.remove(findKauf);
-            em.getTransaction().commit();
 
             kauf.getPositions().forEach(x -> x.setKauf(kauf));
-
             em.getTransaction().begin();
-            em.persist(kauf);
-            em.getTransaction().commit();*/
-
-            em.getTransaction().begin();
-            kauf.getPositions().forEach(x -> x.setKauf(kauf));
             em.merge(kauf);
             em.getTransaction().commit();
 

@@ -8,10 +8,6 @@ public class WebServiceStarter {
 
     public static void main(String[] args) throws Exception {
 
-  /*   EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
-        EntityManager   em2 = emf.createEntityManager();*/
-
-
         ResourceConfig rc = new ResourceConfig().packages("resources", "filter");
         HttpServer server = JdkHttpServerFactory.createHttpServer(URI.create("http://localhost:8080/"), rc);
         System.out.println("Hit enter to stop HTTP server.");

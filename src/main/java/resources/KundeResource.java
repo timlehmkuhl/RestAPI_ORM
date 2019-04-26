@@ -23,14 +23,12 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 @Path("/kunden")
 public class KundeResource {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
     EntityManager em = emf.createEntityManager();
-    final static Map<Integer, Kunde> kundenMap = new ConcurrentHashMap<>();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -38,7 +36,6 @@ public class KundeResource {
     Query q = em.createQuery("select k from Kunde k");
             List<Kunde> list = q.getResultList();
             em.close();
-
 
         return list;  // return code is 200
     }
@@ -50,7 +47,7 @@ public class KundeResource {
 
         //Gesuchten Kunden aus DB holen
         Kunde kunde =  em.find(Kunde.class, id);
-
+        em.close();
         if (kunde == null) {
             return Response.status(Response.Status.NOT_FOUND).build(); // return code is 404
         }
@@ -61,19 +58,7 @@ public class KundeResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKunde(@NotNull Kunde kunde, @Context UriInfo uriInfo) {
-        int maxKundenID;
-        //neue KundenID heruasfinden
-      /*  try {
-            Query q = em.createQuery("Select max(k.kundenID) From Kunde k");
-            Object maxKundenIDObject = q.getSingleResult();
-            maxKundenID = maxKundenIDObject == null ? 0 : (int) maxKundenIDObject;
-        } catch (Exception e) {
-           maxKundenID = 0;
-        }
-        boolean validId = kunde.kundenID > 0 && maxKundenID == 0;
-        if (!validId) {
-            kunde.kundenID = maxKundenID+1;
-        }*/
+
         //Kunde in Datenbank
         em.getTransaction().begin();
         em.persist(kunde);
@@ -97,14 +82,7 @@ public class KundeResource {
             return postKunde(kunde, uriInfo);
         } else {
             //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
-       /*     em.getTransaction().begin();
-            Query qD = em.createQuery("delete from Kunde k where k.kundenID = :sqlWhere");
-            qD.setParameter("sqlWhere", id);
-            qD.executeUpdate();
-         //   em.remove(id);
 
-            em.persist(kunde);
-            em.getTransaction().commit();*/
             em.getTransaction().begin();
             em.merge(kunde);
             em.getTransaction().commit();
@@ -131,7 +109,7 @@ public class KundeResource {
                 kunde.nachname = patchedKunde.nachname;
             }
             if (patchedKunde.anschrift.strasse != null) {
-                System.out.println("TEST");
+
                 kunde.anschrift.strasse = patchedKunde.anschrift.strasse;
             }
             if (patchedKunde.anschrift.plz != null) {
@@ -145,6 +123,11 @@ public class KundeResource {
             }
             if (patchedKunde.kundenkarte != null) {
                 kunde.kundenkarte = patchedKunde.kundenkarte;
+            }
+
+            if (kunde.anschrift == null){
+                kunde.anschrift = patchedKunde.anschrift;
+                System.out.println("TEST");
             }
 
             em.getTransaction().begin();
