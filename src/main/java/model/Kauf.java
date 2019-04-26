@@ -14,6 +14,7 @@ import java.util.*;
 public class Kauf {
     
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public int kaufID;
 
     public int kundenID;

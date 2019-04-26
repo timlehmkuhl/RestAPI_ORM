@@ -18,7 +18,8 @@ import java.text.DecimalFormat;
 public class Position {
 
     @Id
-    public int id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    public int positionID;
 
     public int artikelID;
 
@@ -39,13 +40,13 @@ public class Position {
 
     }
 
-    public int getId() {
-        return id;
-    }
+ /*   public int getId() {
+        return PositionID;
+    }*/
 
-    public void setId(int id) {
-        this.id = id;
-    }
+   /* public void setId(int PositionID) {
+        this.PositionID = PositionID;
+    }*/
 
     @XmlTransient
     @JsonIgnore

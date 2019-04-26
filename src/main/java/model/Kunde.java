@@ -10,9 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Kunde {
 
 
-    public static AtomicInteger nextId = new AtomicInteger(1);
+ //   public static AtomicInteger nextId = new AtomicInteger(1);
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public int kundenID;
 
     @Basic

@@ -63,7 +63,7 @@ public class KundeResource {
     public Response postKunde(@NotNull Kunde kunde, @Context UriInfo uriInfo) {
         int maxKundenID;
         //neue KundenID heruasfinden
-        try {
+      /*  try {
             Query q = em.createQuery("Select max(k.kundenID) From Kunde k");
             Object maxKundenIDObject = q.getSingleResult();
             maxKundenID = maxKundenIDObject == null ? 0 : (int) maxKundenIDObject;
@@ -73,7 +73,7 @@ public class KundeResource {
         boolean validId = kunde.kundenID > 0 && maxKundenID == 0;
         if (!validId) {
             kunde.kundenID = maxKundenID+1;
-        }
+        }*/
         //Kunde in Datenbank
         em.getTransaction().begin();
         em.persist(kunde);
@@ -97,13 +97,16 @@ public class KundeResource {
             return postKunde(kunde, uriInfo);
         } else {
             //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
-            em.getTransaction().begin();
+       /*     em.getTransaction().begin();
             Query qD = em.createQuery("delete from Kunde k where k.kundenID = :sqlWhere");
             qD.setParameter("sqlWhere", id);
             qD.executeUpdate();
          //   em.remove(id);
 
             em.persist(kunde);
+            em.getTransaction().commit();*/
+            em.getTransaction().begin();
+            em.merge(kunde);
             em.getTransaction().commit();
             em.close();
             return Response.ok(kunde).build(); // return code is 200

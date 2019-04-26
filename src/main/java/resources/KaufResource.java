@@ -58,7 +58,7 @@ public class KaufResource {
         p.setPreis(3.99);
         System.err.println(kauf.getPositions().get(1).preis);
         kauf.getPositions().set(1, 3.99);*/
-        int maxKundenID;
+      /*  int maxKundenID;
         int maxPositionID;
         //neue KundenID heruasfinden
         try {
@@ -85,7 +85,7 @@ public class KaufResource {
 
         for (int i = 0; i < kauf.getPositions().size(); i++) {
             kauf.getPositions().get(i).setId(maxPositionID + i + 1);
-        }
+        }*/
 
         kauf.getPositions().forEach(x -> x.setKauf(kauf));
 
@@ -101,7 +101,7 @@ public class KaufResource {
 
     @PUT
     @Path("{id}")
-    public Response putKunde(@PathParam("id") int id, @NotNull Kauf kauf, @Context UriInfo uriInfo) {
+    public Response putKauf(@PathParam("id") int id, @NotNull Kauf kauf, @Context UriInfo uriInfo) {
 
         Kauf findKauf = em.find(Kauf.class, id);   //q.getSingleResult();
 
@@ -111,7 +111,7 @@ public class KaufResource {
             return postKauf(kauf, uriInfo);
         } else {
             //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
-            em.getTransaction().begin();
+      /*      em.getTransaction().begin();
             //Query qD = em.createQuery("delete from Kauf k where k.kaufID = :sqlWhere");
             //   qD.setParameter("sqlWhere", id);
             //  qD.executeUpdate();
@@ -123,57 +123,20 @@ public class KaufResource {
 
             em.getTransaction().begin();
             em.persist(kauf);
+            em.getTransaction().commit();*/
+
+            em.getTransaction().begin();
+            kauf.getPositions().forEach(x -> x.setKauf(kauf));
+            em.merge(kauf);
             em.getTransaction().commit();
+
+
             em.close();
             return Response.ok(kauf).build(); // return code is 200
         }
     }
 
-    /*
-        @PATCH
-        @Path("{id}")
-        public Response patchKunde(@PathParam("id") int id, @NotNull Kunde patchedKunde) {
 
-            Kunde kunde =  em.find(Kunde.class, id);
-
-            boolean exists = kunde != null;
-            if (!exists) {
-                return Response.status(404).build(); // return code is 404
-            } else {
-                if (patchedKunde.vorname != null) {
-                    kunde.vorname = patchedKunde.vorname;
-                }
-                if (patchedKunde.nachname != null) {
-
-                    kunde.nachname = patchedKunde.nachname;
-                }
-                if (patchedKunde.anschrift.strasse != null) {
-                    System.out.println("TEST");
-                    kunde.anschrift.strasse = patchedKunde.anschrift.strasse;
-                }
-                if (patchedKunde.anschrift.plz != 0) {
-                    kunde.anschrift.plz = patchedKunde.anschrift.plz;
-                }
-                if (patchedKunde.anschrift.ort != null) {
-                    kunde.anschrift.ort = patchedKunde.anschrift.ort;
-                }
-                if (patchedKunde.geschaeftskunde != null) {
-                    kunde.geschaeftskunde = patchedKunde.geschaeftskunde;
-                }
-                if (patchedKunde.kundenkarte != null) {
-                    kunde.kundenkarte = patchedKunde.kundenkarte;
-                }
-
-                em.getTransaction().begin();
-                em.persist(kunde);
-                em.getTransaction().commit();
-                em.close();
-
-
-                return Response.ok(kunde).build(); // return code is 200
-            }
-
-        }*/
 
     @DELETE
     public Response deleteKaeufe() {
