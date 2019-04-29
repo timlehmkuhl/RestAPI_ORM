@@ -109,6 +109,10 @@ public class KaufResource {
     public Response deleteKunde(@PathParam("id") int id) {
 
         em.getTransaction().begin();
+       // em.remove(em.find(Kauf.class, id));
+        Query qD =  em.createQuery("delete from Position p where p.kauf.kaufID = :sqlWhere");
+        qD.setParameter("sqlWhere", id);
+        qD.executeUpdate();
         em.remove(em.find(Kauf.class, id));
         em.getTransaction().commit();
         em.close();

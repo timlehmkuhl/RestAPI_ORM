@@ -39,10 +39,11 @@ public class Position {
     }
 
     public void setPreis(double preis) {
+        //preis draf nur 2 Nachkommastellen haben, sonst wird der Rest abgeschnitten
         String str = String.valueOf(preis);
         if (str.substring(str.indexOf(".")+1).length() > 2) {
-            BigDecimal bd = new BigDecimal(preis).setScale(2, RoundingMode.FLOOR);
-            this.preis = bd.doubleValue();
+            str = str.substring(0, str.indexOf(".")+3);
+            this.preis = Double.valueOf(str);
         } else {
             this.preis = preis;
         }

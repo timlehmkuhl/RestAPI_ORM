@@ -22,14 +22,22 @@ public class Kunde {
     public Anschrift anschrift;
 
 
-    public Boolean geschaeftskunde;
+    public Boolean geschaeftskunde = false;
 
 
 
-    public Boolean kundenkarte;
+    public Boolean kundenkarte = true;
 
 
     public String email;
 
 
+    public void setEmail(String email) {
+        //email muss einem bestimmten Muster entsprechen, sonst wird null zurueck gegeben
+        if (email.matches("[^@]+@[^\\.]+\\..+")){
+            this.email = email;
+        } else  {
+            this.email = null;
+        }
+    }
 }
