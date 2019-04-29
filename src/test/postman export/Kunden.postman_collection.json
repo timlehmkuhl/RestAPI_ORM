@@ -1,0 +1,470 @@
+{
+	"info": {
+		"_postman_id": "5b76dc4b-ef40-468c-965b-a9afd289167a",
+		"name": "Kunden",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post Kunde",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "675c4b37-800c-4519-accd-5cb9dc0c2827",
+						"exec": [
+							"pm.test(\"Post kunde\", function () {",
+							"    pm.response.to.have.status(201);",
+							"    var json = pm.response.json();",
+							"   ",
+							"    pm.globals.set(\"id\", json.kundenID);",
+							"   ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"vorname\": \"Max\",\n    \"nachname\": \"Müller\",\n    \"anschrift\": \n        {\n            \"strasse\": \"Schwartauer Allee 4\",\n            \"plz\": \"23565\",\n            \"ort\": \"Lübeck\"\n        },\n    \n    \"geschaeftskunde\": false,\n   \"kundenkarte\": false,\n   \"email\": \"max.müller@gmx.de\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/kunden",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kunden"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Post Kunde Ingo",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vorname\": \"Ingo\",\n    \"nachname\": \"Meyer\",\n    \"anschrift\": \n        {\n            \"strasse\": \"An der Alster 2\",\n            \"plz\": \"20099\",\n            \"ort\": \"Hamburg\"\n        },\n   \"email\": \"mail@ingomeyer.de\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/kunden",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kunden"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 29 Apr 2019 15:39:28 GMT"
+						},
+						{
+							"key": "Content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-length",
+							"value": "201"
+						},
+						{
+							"key": "Location",
+							"value": "http://localhost:8080/kunden/3"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"kundenID\": 3,\n    \"vorname\": \"Sabine\",\n    \"nachname\": \"Schneider\",\n    \"anschrift\": {\n        \"strasse\": \"Königsstr. 25\",\n        \"plz\": \"23564\",\n        \"ort\": \"Lübeck\"\n    },\n    \"geschaeftskunde\": true,\n    \"kundenkarte\": true,\n    \"email\": \"s.schneider@gmail.com\"\n}"
+				},
+				{
+					"name": "Post Kunde Sabine",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vorname\": \"Sabine\",\n    \"nachname\": \"Schneider\",\n    \"anschrift\": \n        {\n            \"strasse\": \"Königsstr. 25\",\n            \"plz\": \"23564\",\n            \"ort\": \"Lübeck\"\n        },\n    \n    \"geschaeftskunde\": true,\n   \"kundenkarte\": true,\n   \"email\": \"s.schneider@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/kunden",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kunden"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 29 Apr 2019 15:33:19 GMT"
+						},
+						{
+							"key": "Content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-length",
+							"value": "200"
+						},
+						{
+							"key": "Location",
+							"value": "http://localhost:8080/kunden/1"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"kundenID\": 1,\n    \"vorname\": \"Max\",\n    \"nachname\": \"Müller\",\n    \"anschrift\": {\n        \"strasse\": \"Schwartauer Allee 4\",\n        \"plz\": \"23565\",\n        \"ort\": \"Lübeck\"\n    },\n    \"geschaeftskunde\": false,\n    \"kundenkarte\": false,\n    \"email\": \"max.müller@gmx.de\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Kunden",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4fcf2ea9-9496-4db9-8f61-ecd2853d6490",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kunden",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kunden"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Kunde",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d58d50b9-bb7a-42a4-a72e-121c84998884",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kunden/:kundenID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kunden",
+						":kundenID"
+					],
+					"variable": [
+						{
+							"key": "kundenID",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Patch Kunde",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a0021e71-ee2e-460a-b872-eb74e1d4dc61",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e61d2ed4-c329-456b-95c0-f30f5889a947",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"anschrift\": {\n        \"strasse\": \"Patchstr. 22\",\n        \"ort\": \"Patchstadt\"\n    },\n    \"geschaeftskunde\": false,\n    \"kundenkarte\": false\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/kunden/:kundenID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kunden",
+						":kundenID"
+					],
+					"variable": [
+						{
+							"key": "kundenID",
+							"value": "{{id}}",
+							"type": "string"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Kunde",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "20b253b3-60bb-43d8-9e26-4bb385253034",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nachname\": \"Putberger\",\n    \"email\": \"putberger@put.de\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/kunden/:kundenID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kunden",
+						":kundenID"
+					],
+					"variable": [
+						{
+							"key": "kundenID",
+							"value": "{{id}}",
+							"type": "string"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Kunde",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3f15630-0886-4420-a9b7-cd6fe798ca3b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kunden/:kundenID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kunden",
+						":kundenID"
+					],
+					"variable": [
+						{
+							"key": "kundenID",
+							"value": "{{id}}",
+							"type": "string"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Kunden",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e9506f16-d8da-4e5d-8dc3-17b0d9560fe5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kunden",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kunden"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

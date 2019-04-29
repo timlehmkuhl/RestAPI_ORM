@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "556b0601-99a1-4954-8c4c-999d83c5456f",
+		"name": "Kauf",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post Kauf",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "675c4b37-800c-4519-accd-5cb9dc0c2827",
+						"exec": [
+							"pm.test(\"Post Kauf\", function () {",
+							"    pm.response.to.have.status(201);",
+							"    var json = pm.response.json();",
+							"   ",
+							"    pm.globals.set(\"idKauf\", json.kaufID);",
+							"   ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"kundenID\": 1,\n    \"baumarktID\": 1,\n    \"zeit\": \"2019-04-14 16:12\",\n    \"positions\": [\n        {\n            \"artikelID\": 1,\n            \"anzahl\": 3,\n            \"preis\": 0.99\n        },\n        {\n            \"artikelID\": 3,\n            \"anzahl\": 4,\n            \"preis\": 59.99\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/kaeufe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kaeufe"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Post Kauf 3",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"kundenID\": 2,\n    \"baumarktID\": 3,\n    \"zeit\": \"2019-04-16 17:30\",\n    \"positions\": [\n        {\n            \"artikelID\": 4,\n            \"anzahl\": 1,\n            \"preis\": 100\n        },\n        {\n            \"artikelID\": 3,\n            \"anzahl\": 4,\n            \"preis\": 49.99\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/kaeufe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kaeufe"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 29 Apr 2019 15:52:57 GMT"
+						},
+						{
+							"key": "Content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-length",
+							"value": "247"
+						},
+						{
+							"key": "Location",
+							"value": "http://localhost:8080/kaeufe/3"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Post Kauf 2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"kundenID\": 4,\n    \"baumarktID\": 3,\n    \"zeit\": \"2019-04-15 12:02\",\n    \"positions\": [\n        {\n            \"artikelID\": 5,\n            \"anzahl\": 1,\n            \"preis\": 30\n        },\n        {\n            \"artikelID\": 6,\n            \"anzahl\": 2,\n            \"preis\": 17.99\n        },\n        {\n            \"artikelID\": 1,\n            \"anzahl\": 10,\n            \"preis\": 0.99\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/kaeufe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kaeufe"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 29 Apr 2019 15:49:24 GMT"
+						},
+						{
+							"key": "Content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-length",
+							"value": "191"
+						},
+						{
+							"key": "Location",
+							"value": "http://localhost:8080/kaeufe/2"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"kaufID\": 2,\n    \"kundenID\": 1,\n    \"baumarktID\": 0,\n    \"zeit\": \"2019-04-14 16:12\",\n    \"positions\": [\n        {\n            \"positionID\": 3,\n            \"artikelID\": 1,\n            \"anzahl\": 3,\n            \"preis\": 0.99\n        },\n        {\n            \"positionID\": 4,\n            \"artikelID\": 3,\n            \"anzahl\": 4,\n            \"preis\": 59.99\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Kaeufe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4fcf2ea9-9496-4db9-8f61-ecd2853d6490",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kaeufe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kaeufe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Kauf",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d58d50b9-bb7a-42a4-a72e-121c84998884",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kaeufe/:kaufID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kaeufe",
+						":kaufID"
+					],
+					"variable": [
+						{
+							"key": "kaufID",
+							"value": "{{idKauf}}",
+							"type": "string"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Kauf",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "20b253b3-60bb-43d8-9e26-4bb385253034",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"zeit\": \"2004-12-01 18:12\",\n    \"positions\": [\n        {\n        \t\"positionID\": 6,\n            \"artikelID\": 3,\n            \"preis\": 99.99\n        },\n        {\n        \t\"positionID\": 7,\n            \"artikelID\": 2,\n            \"preis\": 99.99\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/kaeufe/:kaufID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kaeufe",
+						":kaufID"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					],
+					"variable": [
+						{
+							"key": "kaufID",
+							"value": "{{idKauf}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Kauf",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3f15630-0886-4420-a9b7-cd6fe798ca3b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kaeufe/:kaufID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kaeufe",
+						":kaufID"
+					],
+					"variable": [
+						{
+							"key": "kaufID",
+							"value": "{{idKauf}}",
+							"type": "string"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Kaeufe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e9506f16-d8da-4e5d-8dc3-17b0d9560fe5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kaeufe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kaeufe"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete Kunden",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/kaeufe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kaeufe"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 25 Apr 2019 13:23:24 GMT"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}
