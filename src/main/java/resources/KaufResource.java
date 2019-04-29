@@ -23,6 +23,7 @@ public class KaufResource {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
     EntityManager em = emf.createEntityManager();
 
+    //Laedt alle Datensaetze aus der DB und gibt diese zurueck
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Kauf> getKaeufe() {
@@ -33,6 +34,7 @@ public class KaufResource {
         return list;  // return code is 200
     }
 
+    //Laedt einen einzelnen Datensatz mit beliebiger ID aus der DB und gibt diesen zurueck
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -48,22 +50,24 @@ public class KaufResource {
         return Response.ok(kauf).build(); // return code is 200
     }
 
+    //Fuegt einen neuen Datensatz in die DB ein
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKauf(@NotNull Kauf kauf, @Context UriInfo uriInfo) {
 
-        kauf.getPositions().forEach(x -> x.setKauf(kauf));
+        kauf.getPositions().forEach(x -> x.setKauf(kauf));  //Der Position einen Kauf zuordnen
 
         em.getTransaction().begin();
         em.persist(kauf);
         em.getTransaction().commit();
         em.close();
 
-        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kauf.kaufID)).build(); // append new id to URI
+        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kauf.kaufID)).build(); // Neue id zu URI anfuegen
 
         return Response.created(uri).entity(kauf).build(); // return code is 201
     }
 
+    //Einen beliebigen Datensatz aendern und ungeaenderte Attribute aus null/0 setzen
     @PUT
     @Path("{id}")
     public Response putKauf(@PathParam("id") int id, @NotNull Kauf kauf, @Context UriInfo uriInfo) {
@@ -73,11 +77,11 @@ public class KaufResource {
         boolean exists = findKauf != null;
         kauf.kaufID = id;
         if (!exists) {
-            return postKauf(kauf, uriInfo);
+            return postKauf(kauf, uriInfo);     //wenn der Kauf nicht existiert, erstelle einen neuen
         } else {
-            //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
+            //Ausgewaelter Kaeuf loeschen und mit neuen Werten einfuegen
 
-            kauf.getPositions().forEach(x -> x.setKauf(kauf));
+            kauf.getPositions().forEach(x -> x.setKauf(kauf));      //Der Position einen Kauf zuordnen
             em.getTransaction().begin();
             em.merge(kauf);
             em.getTransaction().commit();
@@ -89,7 +93,7 @@ public class KaufResource {
     }
 
 
-
+    //Alle Datensaetze aus der DB loeschen
     @DELETE
     public Response deleteKaeufe() {
 
@@ -100,16 +104,17 @@ public class KaufResource {
         q2.executeUpdate();
         em.getTransaction().commit();
         em.close();
-        System.out.println("DELETED ALL");
+
         return Response.noContent().build(); // return code is 204
     }
 
+    //Einen beliegigen Datensatz loeschen
     @DELETE
     @Path("{id}")
     public Response deleteKunde(@PathParam("id") int id) {
 
         em.getTransaction().begin();
-       // em.remove(em.find(Kauf.class, id));
+       //Um fk Beziehungsprobleme auszuloesen erst die Positionen loeschen
         Query qD =  em.createQuery("delete from Position p where p.kauf.kaufID = :sqlWhere");
         qD.setParameter("sqlWhere", id);
         qD.executeUpdate();

@@ -30,6 +30,7 @@ public class KundeResource {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("mariadb-localhost");
     EntityManager em = emf.createEntityManager();
 
+    //Laedt alle Datensaetze aus der DB und gibt diese zurueck
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Kunde> getKunden() {
@@ -40,6 +41,7 @@ public class KundeResource {
         return list;  // return code is 200
     }
 
+    //Laedt einen einzelnen Datensatz mit beliebiger ID aus der DB und gibt diesen zurueck
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -55,6 +57,7 @@ public class KundeResource {
         return Response.ok(kunde).build(); // return code is 200
     }
 
+    //Fuegt einen neuen Datensatz in die DB ein
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response postKunde(@NotNull Kunde kunde, @Context UriInfo uriInfo) {
@@ -65,11 +68,12 @@ public class KundeResource {
         em.getTransaction().commit();
         em.close();
 
-        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kunde.kundenID)).build(); // append new id to URI
+        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(kunde.kundenID)).build(); // Neue id zu URI anfuegen
 
         return Response.created(uri).entity(kunde).build(); // return code is 201
     }
 
+    //Einen beliebigen Datensatz aendern und ungeaenderte Attribute aus null/0 setzen
     @PUT
     @Path("{id}")
     public Response putKunde(@PathParam("id") int id, @NotNull Kunde kunde, @Context UriInfo uriInfo) {
@@ -79,7 +83,7 @@ public class KundeResource {
         boolean exists = findKunde != null;
         kunde.kundenID = id;
         if (!exists) {
-            return postKunde(kunde, uriInfo);
+            return postKunde(kunde, uriInfo);   //wenn der Kunde nicht existiert, erstelle einen neuen
         } else {
             //Ausgewaelten Kunden loeschen und mit neuen Werten einfügen
 
@@ -91,6 +95,7 @@ public class KundeResource {
         }
     }
 
+    //Werte aus einem beliegigem Datensatz aendern (laut Aufgabenstellung nicht gefordert)
     @PATCH
     @Path("{id}")
     public Response patchKunde(@PathParam("id") int id, @NotNull Kunde patchedKunde) {
@@ -141,6 +146,7 @@ public class KundeResource {
 
     }
 
+    //Alle Datensaetze aus der DB loeschen
     @DELETE
     public Response deleteKunden() {
 
@@ -149,10 +155,11 @@ public class KundeResource {
         q.executeUpdate();
         em.getTransaction().commit();
         em.close();
-        System.out.println("DELETED ALL");
+
         return Response.noContent().build(); // return code is 204
     }
 
+    //Einen beliegigen Datensatz loeschen
     @DELETE
     @Path("{id}")
     public Response deleteKunde(@PathParam("id") int id) {
